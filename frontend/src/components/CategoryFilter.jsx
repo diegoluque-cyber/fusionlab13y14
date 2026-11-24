@@ -1,22 +1,22 @@
-import { Button } from "@/components/ui/button"
-
 export default function CategoryFilter({ categorias, seleccionada, onSeleccionar }) {
   return (
-    <div className="flex flex-wrap gap-2 mb-6">
-      <Button
-        variant={seleccionada === null ? "default" : "outline"}
+    <div className="categorias">
+      <button
+        type="button"
+        className={seleccionada === null ? "activa" : ""}
         onClick={() => onSeleccionar(null)}
       >
         Todas
-      </Button>
+      </button>
       {categorias.map((c) => (
-        <Button
+        <button
           key={c.id}
-          variant={seleccionada === c.id ? "default" : "outline"}
+          type="button"
+          className={seleccionada === c.id ? "activa" : ""}
           onClick={() => onSeleccionar(c.id)}
         >
           {c.nombre}
-        </Button>
+        </button>
       ))}
     </div>
   )

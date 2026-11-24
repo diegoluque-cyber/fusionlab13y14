@@ -1,21 +1,13 @@
 ﻿import ProductCard from "./ProductCard"
 
-export default function ProductList({ productos }) {
+export default function ProductList({ productos, onSelect }) {
   if (productos.length === 0) {
-    return <p className="text-center text-gray-500">No hay productos en esta categoría.</p>
+    return <p className="vacio">No hay títulos con ese criterio.</p>
   }
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="rejilla">
       {productos.map((p) => (
-        <ProductCard
-          key={p.id}
-          nombre={p.nombre}
-          descripcion={p.descripcion}
-          precio={p.precio}
-          imagen={p.imagen_url}
-          categoria={p.categoria_nombre}
-          cantidad={p.cantidad_disponible}
-        />
+        <ProductCard key={p.id} producto={p} onSelect={onSelect} />
       ))}
     </div>
   )

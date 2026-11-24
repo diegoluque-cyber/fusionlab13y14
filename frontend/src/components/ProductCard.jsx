@@ -1,19 +1,30 @@
-﻿import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+﻿import { formatearPrecio } from "@/services/api"
 
-export default function ProductCard({ nombre, descripcion, precio, imagen, categoria, cantidad }) {
+export default function ProductCard({ producto, onSelect }) {
+  const { nombre, descripcion, imagen_url, categoria_nombre, cantidad_disponible } = producto
+  const agotado = producto.estado_stock === "agotado"
+
   return (
-    <Card className="overflow-hidden">
-      <img src={imagen} alt={nombre} className="h-48 w-full object-cover" />
-      <CardHeader>
-        <Badge variant="secondary" className="w-fit">{categoria}</Badge>
-        <CardTitle>{nombre}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="text-sm text-gray-600 mb-2">{descripcion}</p>
-        <p className="text-lg font-bold text-amber-900">S/ {precio}</p>
-        <p className="text-xs text-gray-500">Stock disponible: {cantidad}</p>
-      </CardContent>
-    </Card>
+    <button type="button" className="ficha" onClick={() => onSelect?.(producto)}>
+      <div className="ficha-foto">
+        <img src={imagen_url} alt="" className={agotado ? "apagada" : ""} />
+        {producto.en_oferta && <span className="sello">−{producto.descuento}%</span>}
+        {agotado && <span className="sello oscuro">Agotado</span>}
+      </div>
+      <p className="ficha-cat">{categoria_nombre}</p>
+      <h3>{nombre}</h3>
+      <p className="ficha-desc">{descripcion}</p>
+      <div className="ficha-pie">
+        <p className="precio">
+          {formatearPrecio(producto.precio_final)}
+          {producto.en_oferta && <s>{formatearPrecio(producto.precio)}</s>}
+        </p>
+        {producto.estado_stock === "bajo" ? (
+          <p className="stock bajo">Quedan {cantidad_disponible}</p>
+        ) : (
+          <p className="stock">{agotado ? "Sin stock" : `${cantidad_disponible} en stock`}</p>
+        )}
+      </div>
+    </button>
   )
 }
